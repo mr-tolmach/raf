@@ -12,9 +12,9 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with ShrinkLowPriority {
 
   override implicit val generatorDrivenConfig: PropertyCheckConfiguration = PropertyCheckConfiguration(
-    minSuccessful = PosInt(10000),
+    minSuccessful = PosInt(100000),
     maxDiscardedFactor = PosZDouble(0.0000001),
-    workers = PosInt(10)
+    workers = PosInt(30)
   )
 
   private def checkPhoneNumber(phoneNumber: String): Unit = {
@@ -51,7 +51,7 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
   "Generators.validPhoneNumberGen" should {
     "provide phone number generator" which {
       "returns valid phone numbers" when {
-        RegionMetadataProvider.All.filter(_.region == Regions.AT).foreach { regionMetadata =>
+        RegionMetadataProvider.All.foreach { regionMetadata =>
           s"${regionMetadata.region} region was passed" in {
             val gen = Generators.validPhoneNumberGen(regionMetadata.region)
             val checker = checkPhoneNumber(regionMetadata)(_)

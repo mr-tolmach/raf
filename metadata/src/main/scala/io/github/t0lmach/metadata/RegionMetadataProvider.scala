@@ -12,9 +12,9 @@ object RegionMetadataProvider {
     Regions.All.toSeq.map(readForRegion)
   }
 
-  private def metadataFileName(region: Region) = s"$region"
+  private def metadataFileName(region: Region) = s"metadata/$region"
 
-  def readForRegion(region: Region): RegionMetadata = {
+  private def readForRegion(region: Region): RegionMetadata = {
     val url = this.getClass.getClassLoader.getResource(metadataFileName(region))
     val path = Paths.get(url.toURI)
     val bytes = Files.readAllBytes(path)

@@ -28,7 +28,4 @@ object PhoneNumberHelper {
     }
   }
 
-  def supportedRegions: Set[String] =
-    Util.getSupportedRegions.asScala.toSet
-
 }

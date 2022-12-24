@@ -5,7 +5,7 @@ object Dependencies {
 
   object Versions {
     val scalacheckVersion = "1.16.0"
-    val libphonenumberVersion = "8.12.30"
+    val libphonenumberVersion = "8.12.56"
     val scalacheckGenRegexpVersion = "0.1.3"
     val scalacticVersion = "3.2.12"
     val scalatestVersion = "3.2.12"
