@@ -1,8 +1,16 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+val defaultScalaVersion = "2.13.10"
 
-ThisBuild / scalaVersion := "2.13.10"
-
-Test / logBuffered := false
+inThisBuild(
+  List(
+    organization := "io.github.mr-tolmach",
+    homepage := Some(url("https://github.com/mr-tolmach/raf")),
+    licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+    scalaVersion := defaultScalaVersion,
+    crossScalaVersions := Seq("2.12.17", defaultScalaVersion),
+    publish / skip := true,
+    Test / logBuffered := false
+  )
+)
 
 resolvers +=
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
@@ -10,14 +18,16 @@ resolvers +=
 lazy val metadata = (project in file("metadata"))
   .settings(
     name := "metadata",
-    publishArtifact := false,
+    publish / skip := false,
+    version := Versions.generators,
     Dependencies.metadata
   )
 
 lazy val generators = (project in file("generators"))
   .settings(
     name := "generators",
-    publishMavenStyle := true,
+    publish / skip := false,
+    version := Versions.generators,
     Dependencies.generators
   ).dependsOn(metadata)
 
