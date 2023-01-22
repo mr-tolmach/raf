@@ -24,6 +24,10 @@ object Dependencies {
   val snappy = "org.xerial.snappy" % "snappy-java" % snappyVersion
 
   val metadata = libraryDependencies ++= Seq(
+    scalacheck,
+    scalactic,
+    scalatest,
+    scalatestplusScalacheck,
     snappy
   )
 
