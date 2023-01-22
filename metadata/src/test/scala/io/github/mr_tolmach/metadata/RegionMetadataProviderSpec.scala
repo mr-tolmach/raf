@@ -1,6 +1,5 @@
-package io.github.mr_tolmach
+package io.github.mr_tolmach.metadata
 
-import io.github.mr_tolmach.metadata.RegionMetadataProvider
 import io.github.mr_tolmach.metadata.model.Regions
 import org.scalatest.wordspec.AnyWordSpec
 

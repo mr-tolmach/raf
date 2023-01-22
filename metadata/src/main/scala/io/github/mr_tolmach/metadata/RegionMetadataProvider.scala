@@ -1,18 +1,22 @@
 package io.github.mr_tolmach.metadata
 
-import io.github.mr_tolmach.metadata.model.{RegionMetadata, Regions}
+import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
+import io.github.mr_tolmach.metadata.model.RegionMetadata
 import io.github.mr_tolmach.metadata.model.Regions.Region
 import org.xerial.snappy.Snappy
+
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
 
 object RegionMetadataProvider {
 
-  lazy val All: Seq[RegionMetadata] = {
-    Regions.All.toSeq.map(readForRegion)
+  private val cache: LoadingCache[Region, RegionMetadata] = CacheBuilder.newBuilder().build {
+    new CacheLoader[Region, RegionMetadata] {
+      override def load(key: Region): RegionMetadata = {
+        readForRegion(key)
+      }
+    }
   }
-
-  private def metadataFileName(region: Region) = s"metadata/$region"
 
   private def readForRegion(region: Region): RegionMetadata = {
     val url = this.getClass.getClassLoader.getResource(metadataFileName(region))
@@ -23,10 +27,10 @@ object RegionMetadataProvider {
     RegionMetadata.fromString(line)
   }
 
-  private lazy val MetadataMap: Map[Region, RegionMetadata] = All.map(m => m.region -> m).toMap
+  private def metadataFileName(region: Region) = s"metadata/$region"
 
   def forRegion(region: Region): RegionMetadata = {
-    MetadataMap(region)
+    cache.get(region)
   }
 
 }

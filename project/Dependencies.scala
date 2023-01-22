@@ -11,6 +11,7 @@ object Dependencies {
     val scalatestVersion = "3.2.12"
     val scalatestplusScalacheckVersion = "3.2.12.0"
     val snappyVersion = "1.1.8.4"
+    val guavaVersion = "31.1-jre"
   }
 
   import Dependencies.Versions._
@@ -22,13 +23,15 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion % Test
   val scalatestplusScalacheck = "org.scalatestplus" %% "scalacheck-1-16" % scalatestplusScalacheckVersion % Test
   val snappy = "org.xerial.snappy" % "snappy-java" % snappyVersion
+  val guava = "com.google.guava" % "guava" % guavaVersion
 
   val metadata = libraryDependencies ++= Seq(
     scalacheck,
     scalactic,
     scalatest,
     scalatestplusScalacheck,
-    snappy
+    snappy,
+    guava
   )
 
   val generators = libraryDependencies ++= Seq(

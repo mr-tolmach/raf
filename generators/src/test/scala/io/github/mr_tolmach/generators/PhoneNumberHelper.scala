@@ -1,4 +1,4 @@
-package io.github.mr_tolmach
+package io.github.mr_tolmach.generators
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber

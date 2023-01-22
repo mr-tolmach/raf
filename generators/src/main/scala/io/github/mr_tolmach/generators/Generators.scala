@@ -1,17 +1,17 @@
-package io.github.mr_tolmach
+package io.github.mr_tolmach.generators
 
 import io.github.mr_tolmach.metadata.RegionMetadataProvider
 import io.github.mr_tolmach.metadata.model.PhoneNumberTypes.PhoneNumberType
-import io.github.mr_tolmach.metadata.model.RegionMetadata
 import io.github.mr_tolmach.metadata.model.Regions.Region
+import io.github.mr_tolmach.metadata.model.{RegionMetadata, Regions}
 import org.scalacheck.Gen
 import wolfendale.scalacheck.regexp.RegexpGen
 
 object Generators {
 
   val ValidPhoneNumberGen: Gen[String] = for {
-    regionMetadata <- Gen.oneOf(RegionMetadataProvider.All)
-    phoneNumber <- validPhoneNumberGen(regionMetadata)
+    region <- Gen.oneOf(Regions.All)
+    phoneNumber <- validPhoneNumberGen(region)
   } yield phoneNumber
 
   def validPhoneNumberGen(region: Region): Gen[String] = {
