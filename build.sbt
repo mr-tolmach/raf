@@ -1,12 +1,10 @@
-val defaultScalaVersion = "2.13.10"
-
 inThisBuild(
   List(
     organization := "io.github.mr-tolmach",
     homepage := Some(url("https://github.com/mr-tolmach/raf")),
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
-    scalaVersion := defaultScalaVersion,
-    crossScalaVersions := Seq("2.12.17", defaultScalaVersion),
+    scalaVersion := Versions.defaultScalaVersion,
+    crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
     publish / skip := true,
     Test / logBuffered := false
   )
