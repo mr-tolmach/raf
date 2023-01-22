@@ -4,8 +4,6 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 import io.github.t0lmach.metadata.model.Regions.Region
 
-import scala.jdk.CollectionConverters._
-
 object PhoneNumberHelper {
 
   val Util = PhoneNumberUtil.getInstance()

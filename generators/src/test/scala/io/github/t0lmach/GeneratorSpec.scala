@@ -2,7 +2,7 @@ package io.github.t0lmach
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat
 import io.github.t0lmach.metadata.RegionMetadataProvider
-import io.github.t0lmach.metadata.model.{PhoneNumberTypes, RegionMetadata, Regions}
+import io.github.t0lmach.metadata.model.{PhoneNumberTypes, RegionMetadata}
 import org.scalacheck.ShrinkLowPriority
 import org.scalactic.anyvals.{PosInt, PosZDouble}
 import org.scalatest.matchers.should.Matchers
