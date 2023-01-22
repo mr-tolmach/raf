@@ -1,4 +1,4 @@
-package io.github.t0lmach.metadata.model
+package io.github.mr_tolmach.metadata.model
 
 object PhoneNumberTypes extends Enumeration {
 

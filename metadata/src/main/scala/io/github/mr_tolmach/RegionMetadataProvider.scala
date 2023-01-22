@@ -1,7 +1,7 @@
-package io.github.t0lmach.metadata
+package io.github.mr_tolmach.metadata
 
-import io.github.t0lmach.metadata.model.{RegionMetadata, Regions}
-import io.github.t0lmach.metadata.model.Regions.Region
+import io.github.mr_tolmach.metadata.model.{RegionMetadata, Regions}
+import io.github.mr_tolmach.metadata.model.Regions.Region
 import org.xerial.snappy.Snappy
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}

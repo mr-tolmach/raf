@@ -1,8 +1,8 @@
-package io.github.t0lmach
+package io.github.mr_tolmach
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
-import io.github.t0lmach.metadata.model.Regions.Region
+import io.github.mr_tolmach.metadata.model.Regions.Region
 
 object PhoneNumberHelper {
 

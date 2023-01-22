@@ -1,9 +1,9 @@
-package io.github.t0lmach
+package io.github.mr_tolmach
 
-import io.github.t0lmach.metadata.RegionMetadataProvider
-import io.github.t0lmach.metadata.model.PhoneNumberTypes.PhoneNumberType
-import io.github.t0lmach.metadata.model.RegionMetadata
-import io.github.t0lmach.metadata.model.Regions.Region
+import io.github.mr_tolmach.metadata.RegionMetadataProvider
+import io.github.mr_tolmach.metadata.model.PhoneNumberTypes.PhoneNumberType
+import io.github.mr_tolmach.metadata.model.RegionMetadata
+import io.github.mr_tolmach.metadata.model.Regions.Region
 import org.scalacheck.Gen
 import wolfendale.scalacheck.regexp.RegexpGen
 

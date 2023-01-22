@@ -1,8 +1,8 @@
-package io.github.t0lmach
+package io.github.mr_tolmach
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat
-import io.github.t0lmach.metadata.RegionMetadataProvider
-import io.github.t0lmach.metadata.model.{PhoneNumberTypes, RegionMetadata}
+import io.github.mr_tolmach.metadata.RegionMetadataProvider
+import io.github.mr_tolmach.metadata.model.{PhoneNumberTypes, RegionMetadata}
 import org.scalacheck.ShrinkLowPriority
 import org.scalactic.anyvals.{PosInt, PosZDouble}
 import org.scalatest.matchers.should.Matchers
