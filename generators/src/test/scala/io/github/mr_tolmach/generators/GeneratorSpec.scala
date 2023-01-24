@@ -30,14 +30,14 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
 
   private def checkNumberWithRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, regionMetadata.region)
-    parsed.getCountryCode shouldBe regionMetadata.countryCode
+    regionMetadata.countryCodeToTypePatterns.keys should contain (parsed.getCountryCode)
     val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
     actual shouldBe phoneNumber
   }
 
   private def checkNumberWithoutRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
-    parsed.getCountryCode shouldBe regionMetadata.countryCode
+    regionMetadata.countryCodeToTypePatterns.keys should contain (parsed.getCountryCode)
     val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
     actual shouldBe phoneNumber
   }
@@ -60,7 +60,8 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
               checker(phoneNumber)
             }
           }
-          regionMetadata.typeToPattern.keys.foreach { phoneNumberType =>
+          val phoneNumberTypes = regionMetadata.countryCodeToTypePatterns.values.flatMap(_.keys).toSet
+          phoneNumberTypes.foreach { phoneNumberType =>
             s"$region region and $phoneNumberType phone number type were passed" in {
               val gen = Generators.validPhoneNumberGen(region)
               val checker = checkPhoneNumber(regionMetadata)(_)
@@ -74,7 +75,8 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
       "fails" when {
         Regions.All.foreach { region =>
           val regionMetadata = RegionMetadataProvider.forRegion(region)
-          PhoneNumberTypes.All.diff(regionMetadata.typeToPattern.keys.toSet).foreach { phoneNumberType =>
+          val phoneNumberTypes = regionMetadata.countryCodeToTypePatterns.values.flatMap(_.keys).toSet
+          PhoneNumberTypes.All.diff(phoneNumberTypes).foreach { phoneNumberType =>
             s"unexpected $phoneNumberType phone number type passed for $region region" in {
               intercept[IllegalArgumentException] {
                 Generators.validPhoneNumberGen(regionMetadata.region, phoneNumberType)

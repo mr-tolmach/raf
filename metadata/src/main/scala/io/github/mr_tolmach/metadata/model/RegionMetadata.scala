@@ -4,30 +4,33 @@ import PhoneNumberTypes.PhoneNumberType
 import Regions.Region
 
 case class RegionMetadata(region: Region,
-                          countryCode: Int,
-                          typeToPattern: Map[PhoneNumberType, String])
+                          countryCodeToTypePatterns: Map[Int, Map[PhoneNumberType, String]])
 
 object RegionMetadata {
 
-  private val Separator = ':'
+  private val MainPartSeparator = '#'
+  private val CountryCodeToTypePatternsSeparator = ':'
 
   def fromString(line: String): RegionMetadata = {
-    val parts = line.split(Separator)
+    val parts = line.split(MainPartSeparator)
     parts match {
-      case Array(regionName, countryCode, tail@_*) =>
+      case Array(regionName, tail@_*) =>
         val region = Regions.withName(regionName)
-        val typeToPattern = tail.grouped(2).map {
-          case Seq(typeId, pattern) =>
-            val tpe = PhoneNumberTypes(typeId.toInt)
-            tpe -> pattern
-          case _ =>
-            throw new IllegalArgumentException(s"Unexpected input: $line")
+        val countryCodeToTypePatterns = tail.map(_.split(CountryCodeToTypePatternsSeparator)).map {
+          case Array(countyCode, tail@_*) =>
+            val typeToPattern = tail.grouped(2).map {
+              case Seq(typeId, pattern) =>
+                val tpe = PhoneNumberTypes(typeId.toInt)
+                tpe -> pattern
+              case _ =>
+                throw new IllegalArgumentException(s"Unexpected input: $line")
+            }.toMap
+            countyCode.toInt -> typeToPattern
         }.toMap
 
         RegionMetadata(
           region,
-          countryCode.toInt,
-          typeToPattern
+          countryCodeToTypePatterns
         )
       case _ =>
         throw new IllegalArgumentException(s"Unexpected input: $line")

@@ -26,19 +26,23 @@ object Generators {
 
   private def validPhoneNumberGen(regionMetadata: RegionMetadata): Gen[String] = {
     for {
-      pattern <- Gen.oneOf(regionMetadata.typeToPattern.values)
+      (countryCode, typeToPattern) <- Gen.oneOf(regionMetadata.countryCodeToTypePatterns)
+      pattern <- Gen.oneOf(typeToPattern.values)
       nationalPart <- RegexpGen.from(pattern)
-    } yield toPhoneNumber(regionMetadata.countryCode, nationalPart)
+    } yield toPhoneNumber(countryCode, nationalPart)
   }
 
   private def validPhoneNumberGen(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType): Gen[String] = {
-    regionMetadata.typeToPattern.get(phoneNumberType) match {
-      case Some(pattern) =>
-        RegexpGen.from(pattern).map { nationalPart =>
-          toPhoneNumber(regionMetadata.countryCode, nationalPart)
-        }
-      case None =>
-        throw new IllegalArgumentException(s"$phoneNumberType is not supported for ${regionMetadata.region} region")
+    val countryCodeWithPattern = regionMetadata.countryCodeToTypePatterns.flatMap { case (countryCode, v) =>
+      v.get(phoneNumberType).map { pattern => countryCode -> pattern}
+    }.toSeq
+    if (countryCodeWithPattern.nonEmpty) {
+      for {
+        (countryCode, pattern) <- Gen.oneOf(countryCodeWithPattern)
+        nationalPart <- RegexpGen.from(pattern)
+      } yield toPhoneNumber(countryCode, nationalPart)
+    } else {
+      throw new IllegalArgumentException(s"$phoneNumberType is not supported for ${regionMetadata.region} region")
     }
   }
 

@@ -249,6 +249,7 @@ object Regions extends Enumeration {
   val ZA = Value
   val ZM = Value
   val ZW = Value
+  val NonGeo = Value
 
   val All: Set[Region] = values
 
