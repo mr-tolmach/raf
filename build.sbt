@@ -19,7 +19,7 @@ resolvers ++= Seq(
 
 lazy val metadata = (project in file("metadata"))
   .settings(
-    name := "metadata",
+    moduleName := "raf-metadata",
     publish / skip := false,
     version := Versions.generators,
     Dependencies.metadata
@@ -27,7 +27,7 @@ lazy val metadata = (project in file("metadata"))
 
 lazy val generators = (project in file("generators"))
   .settings(
-    name := "generators",
+    moduleName := "raf-generators",
     publish / skip := false,
     version := Versions.generators,
     Dependencies.generators
