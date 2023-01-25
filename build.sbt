@@ -5,6 +5,7 @@ inThisBuild(
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     sonatypeCredentialHost := "s01.oss.sonatype.org",
     sonatypeRepository :="https://s01.oss.sonatype.org/service/local",
+    versionScheme := Some("early-semver"),
     scalaVersion := Versions.defaultScalaVersion,
     crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
     publish / skip := true,
