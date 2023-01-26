@@ -5,6 +5,7 @@ inThisBuild(
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     sonatypeCredentialHost := "s01.oss.sonatype.org",
     sonatypeRepository :="https://s01.oss.sonatype.org/service/local",
+    versionScheme := Some("early-semver"),
     scalaVersion := Versions.defaultScalaVersion,
     crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
     Test / logBuffered := false
@@ -18,7 +19,7 @@ resolvers ++= Seq(
 
 lazy val metadata = (project in file("metadata"))
   .settings(
-    name := "metadata",
+    moduleName := "raf-metadata",
     publish / skip := false,
     version := Versions.generators,
     Dependencies.metadata
@@ -26,7 +27,7 @@ lazy val metadata = (project in file("metadata"))
 
 lazy val generators = (project in file("generators"))
   .settings(
-    name := "generators",
+    moduleName := "raf-generators",
     publish / skip := false,
     version := Versions.generators,
     Dependencies.generators
