@@ -7,7 +7,6 @@ inThisBuild(
     sonatypeRepository :="https://s01.oss.sonatype.org/service/local",
     scalaVersion := Versions.defaultScalaVersion,
     crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
-    publish / skip := true,
     Test / logBuffered := false
   )
 )
@@ -36,5 +35,6 @@ lazy val generators = (project in file("generators"))
 lazy val root = (project in file("."))
   .settings(
     name := "raf",
+    publish / skip := true,
     publishArtifact := false
   ).aggregate(metadata, generators)
