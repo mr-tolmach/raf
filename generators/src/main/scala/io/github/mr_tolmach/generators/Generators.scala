@@ -34,7 +34,7 @@ object Generators {
 
   private def validPhoneNumberGen(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType): Gen[String] = {
     val countryCodeWithPattern = regionMetadata.countryCodeToTypePatterns.flatMap { case (countryCode, v) =>
-      v.get(phoneNumberType).map { pattern => countryCode -> pattern}
+      v.get(phoneNumberType).map { pattern => countryCode -> pattern }
     }.toSeq
     if (countryCodeWithPattern.nonEmpty) {
       for {

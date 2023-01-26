@@ -30,14 +30,14 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
 
   private def checkNumberWithRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, regionMetadata.region)
-    regionMetadata.countryCodeToTypePatterns.keys should contain (parsed.getCountryCode)
+    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
     val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
     actual shouldBe phoneNumber
   }
 
   private def checkNumberWithoutRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
-    regionMetadata.countryCodeToTypePatterns.keys should contain (parsed.getCountryCode)
+    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
     val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
     actual shouldBe phoneNumber
   }

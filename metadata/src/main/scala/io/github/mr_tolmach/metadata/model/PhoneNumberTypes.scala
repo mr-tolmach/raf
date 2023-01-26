@@ -19,5 +19,3 @@ object PhoneNumberTypes extends Enumeration {
   val All: Set[PhoneNumberType] = values
 
 }
-
-
