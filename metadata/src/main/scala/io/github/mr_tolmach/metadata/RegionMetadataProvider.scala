@@ -6,7 +6,6 @@ import io.github.mr_tolmach.metadata.model.Regions.Region
 import org.xerial.snappy.Snappy
 
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths}
 
 object RegionMetadataProvider {
 
@@ -19,9 +18,8 @@ object RegionMetadataProvider {
   }
 
   private def readForRegion(region: Region): RegionMetadata = {
-    val url = this.getClass.getClassLoader.getResource(metadataFileName(region))
-    val path = Paths.get(url.toURI)
-    val bytes = Files.readAllBytes(path)
+    val inputStream = this.getClass.getClassLoader.getResourceAsStream(metadataFileName(region))
+    val bytes = LazyList.continually(inputStream.read).takeWhile(_ != -1).map(_.toByte).toArray
     val decompressed = Snappy.uncompress(bytes)
     val line = new String(decompressed, StandardCharsets.UTF_8)
     RegionMetadata.fromString(line)
