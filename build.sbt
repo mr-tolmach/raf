@@ -6,6 +6,14 @@ inThisBuild(
     sonatypeCredentialHost := "s01.oss.sonatype.org",
     sonatypeRepository := "https://s01.oss.sonatype.org/service/local",
     versionScheme := Some("early-semver"),
+    developers := List(
+      Developer(
+        "mr-tolmach",
+        "Daniil Tolmachev",
+        "mister.tolmach@gmail.com",
+        url("https://github.com/mr-tolmach")
+      )
+    ),
     scalaVersion := Versions.defaultScalaVersion,
     crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
     Test / logBuffered := false
