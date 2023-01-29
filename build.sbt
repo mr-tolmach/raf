@@ -1,3 +1,6 @@
+import scala.xml.{Node => XmlNode, NodeSeq => XmlNodeSeq, _}
+import scala.xml.transform.{RewriteRule, RuleTransformer}
+
 inThisBuild(
   List(
     organization := "io.github.mr-tolmach",
@@ -16,7 +19,29 @@ inThisBuild(
     ),
     scalaVersion := Versions.defaultScalaVersion,
     crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
-    Test / logBuffered := false
+    Test / logBuffered := false,
+    // skip dependency elements with a test scope
+    pomPostProcess := { (node: XmlNode) =>
+      new RuleTransformer(new RewriteRule {
+
+        private def isTestScoped(e: Elem): Boolean =
+          e.label == "dependency" && e.child.exists(child => child.label == "scope" && child.text == "test")
+
+        override def transform(node: XmlNode): XmlNodeSeq = node match {
+          case e: Elem if isTestScoped(e) =>
+            val dependencyLine = Seq("groupId", "artifactId", "version", "scope")
+              .map { label =>
+                e.child.filter(_.label == label).flatMap(_.text).mkString("\"", "", "\"")
+              }
+              .mkString(" % ")
+
+            sLog.value.info(s"""Dependency $dependencyLine has been omitted""")
+
+            XmlNodeSeq.Empty
+          case _ => node
+        }
+      }).transform(node).head
+    }
   )
 )
 
