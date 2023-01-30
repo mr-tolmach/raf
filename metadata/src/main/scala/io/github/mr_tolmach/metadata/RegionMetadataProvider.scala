@@ -11,7 +11,7 @@ object RegionMetadataProvider {
 
   private def readForRegion(region: Region): RegionMetadata = {
     val inputStream = this.getClass.getClassLoader.getResourceAsStream(metadataFileName(region))
-    val bytes = Stream.continually(inputStream.read).takeWhile(_ != -1).map(_.toByte).toArray
+    val bytes = Iterator.continually(inputStream.read).takeWhile(_ != -1).map(_.toByte).toArray
     val decompressed = Snappy.uncompress(bytes)
     val line = new String(decompressed, StandardCharsets.UTF_8)
     RegionMetadata.fromString(line)
