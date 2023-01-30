@@ -3,6 +3,11 @@ package io.github.mr_tolmach.metadata.model
 import PhoneNumberTypes.PhoneNumberType
 import Regions.Region
 
+/**
+ *
+ * @param region
+ * @param countryCodeToTypePatterns
+ */
 case class RegionMetadata(region: Region, countryCodeToTypePatterns: Map[Int, Map[PhoneNumberType, String]])
 
 object RegionMetadata {

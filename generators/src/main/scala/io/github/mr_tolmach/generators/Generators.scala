@@ -7,6 +7,8 @@ import io.github.mr_tolmach.metadata.model.{RegionMetadata, Regions}
 import org.scalacheck.Gen
 import wolfendale.scalacheck.regexp.RegexpGen
 
+/** Provide a set of generators
+  */
 object Generators {
 
   val ValidPhoneNumberGen: Gen[String] = for {
