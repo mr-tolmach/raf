@@ -46,8 +46,7 @@ inThisBuild(
 )
 
 resolvers ++= Seq(
-  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
-  "guava" at "https://mvnrepository.com/artifact/com.google.guava/guava"
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 )
 
 lazy val metadata = (project in file("metadata"))

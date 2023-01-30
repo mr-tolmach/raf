@@ -1,21 +1,13 @@
 package io.github.mr_tolmach.metadata
 
-import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
 import io.github.mr_tolmach.metadata.model.RegionMetadata
 import io.github.mr_tolmach.metadata.model.Regions.Region
 import org.xerial.snappy.Snappy
 
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.ConcurrentHashMap
 
 object RegionMetadataProvider {
-
-  private val cache: LoadingCache[Region, RegionMetadata] = CacheBuilder.newBuilder().build {
-    new CacheLoader[Region, RegionMetadata] {
-      override def load(key: Region): RegionMetadata = {
-        readForRegion(key)
-      }
-    }
-  }
 
   private def readForRegion(region: Region): RegionMetadata = {
     val inputStream = this.getClass.getClassLoader.getResourceAsStream(metadataFileName(region))
@@ -27,8 +19,15 @@ object RegionMetadataProvider {
 
   private def metadataFileName(region: Region) = s"metadata/$region"
 
+  private val regionsMap = new ConcurrentHashMap[Region, RegionMetadata]()
+
   def forRegion(region: Region): RegionMetadata = {
-    cache.get(region)
+    Option(regionsMap.get(region)) match {
+      case Some(metadata) =>
+        metadata
+      case None =>
+        regionsMap.computeIfAbsent(region, _ => readForRegion(region))
+    }
   }
 
 }
