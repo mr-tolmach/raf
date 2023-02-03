@@ -1,3 +1,3 @@
-![raf](/repository/other/assets/raf-logo.png)
+![raf](other/assets/raf-logo.png)
 
 # raf
