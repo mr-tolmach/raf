@@ -7,6 +7,8 @@ import org.xerial.snappy.Snappy
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentHashMap
 
+/** This object provides metadata for geographical and non-geographical regions
+  */
 object RegionMetadataProvider {
 
   private def metadataFileName(region: Region) = s"metadata/$region"
@@ -21,15 +23,17 @@ object RegionMetadataProvider {
 
   private val regionsMap = new ConcurrentHashMap[Region, RegionMetadata]()
 
-  /** Returns region metadata for provided geographical and non-geographical region.
+  /** Returns [[RegionMetadata]] for the given geographical and non-geographical region.
     *
-    * @note
-    *   use [[io.github.mr_tolmach.metadata.model.Regions.NonGeo Regions.NonGeo]] for non-geographical region
+    * Metadata for each region will be loaded only once.
+    *
+    * Also, this method is thread-safe and can be safely called from multiple threads concurrently. In this case, the
+    * guarantee of loading metadata for each region only once remains unchanged.
     *
     * @param region
-    *   the region for which an metadata is needed
+    *   the region for which [[RegionMetadata]] is needed
     * @return
-    *   the metadata for provided region
+    *   the [[RegionMetadata]] for the given region
     */
   def forRegion(region: Region): RegionMetadata = {
     Option(regionsMap.get(region)) match {
