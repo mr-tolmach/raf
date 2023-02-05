@@ -15,7 +15,8 @@ There are several reasons for this:
 # Ok, fine, how to use it?
 
 First, find out which version is needed by looking at [VERSIONS.md](VERSIONS.md).
-:bangbang: **The version of libphonenumber in your project should be equal to the version of libphonenumber in the raf library** Otherwise there is no guarantee that the generated phones will be correctly parsed by libphonenumer. Be very careful here!
+
+:bangbang: **The version of libphonenumber in your project SHOULD BE EQUAL to the version of libphonenumber in the raf library** Otherwise there is no guarantee that the generated phones will be correctly parsed by libphonenumer. Be very careful here! :bangbang:
 
 Then, add the following dependency:
 ```scala
