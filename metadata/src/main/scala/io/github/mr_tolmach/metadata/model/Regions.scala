@@ -1,8 +1,15 @@
 package io.github.mr_tolmach.metadata.model
 
+/** An enumeration representing the set of supported regions as represented by CLDR two-letter region codes, with the
+  * exception of the non-geographical region which is represented by the [[Regions.NonGeo]] value.
+  */
 object Regions extends Enumeration {
 
+  /** Type alias for values of the [[Regions]] enumeration */
   type Region = Value
+
+  /** Value representing the non-geographical region */
+  val NonGeo = Value
 
   val AC = Value
   val AD = Value
@@ -249,8 +256,8 @@ object Regions extends Enumeration {
   val ZA = Value
   val ZM = Value
   val ZW = Value
-  val NonGeo = Value
 
+  /** Set of all values in the [[Regions]] enumeration */
   val All: Set[Region] = values
 
 }

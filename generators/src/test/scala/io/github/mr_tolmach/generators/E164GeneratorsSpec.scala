@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with ShrinkLowPriority {
+class E164GeneratorsSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with ShrinkLowPriority {
 
   override implicit val generatorDrivenConfig: PropertyCheckConfiguration = PropertyCheckConfiguration(
     minSuccessful = PosInt(100000),
@@ -42,19 +42,19 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
     actual shouldBe phoneNumber
   }
 
-  "Generators.ValidPhoneNumberGen" should {
+  "E164Generators.PhoneNumberGen" should {
     "returns valid phone numbers" in {
-      forAll(Generators.ValidPhoneNumberGen)(checkPhoneNumber)
+      forAll(E164Generators.PhoneNumberGen)(checkPhoneNumber)
     }
   }
 
-  "Generators.validPhoneNumberGen" should {
+  "E164Generators.phoneNumberGen" should {
     "provide phone number generator" which {
       "returns valid phone numbers" when {
         Regions.All.foreach { region =>
           val regionMetadata = RegionMetadataProvider.forRegion(region)
           s"$region region was passed" in {
-            val gen = Generators.validPhoneNumberGen(region)
+            val gen = E164Generators.phoneNumberGen(region)
             val checker = checkPhoneNumber(regionMetadata)(_)
             forAll(gen) { phoneNumber =>
               checker(phoneNumber)
@@ -63,7 +63,7 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
           val phoneNumberTypes = regionMetadata.countryCodeToTypePatterns.values.flatMap(_.keys).toSet
           phoneNumberTypes.foreach { phoneNumberType =>
             s"$region region and $phoneNumberType phone number type were passed" in {
-              val gen = Generators.validPhoneNumberGen(region)
+              val gen = E164Generators.phoneNumberGen(region)
               val checker = checkPhoneNumber(regionMetadata)(_)
               forAll(gen) { phoneNumber =>
                 checker(phoneNumber)
@@ -79,7 +79,7 @@ class GeneratorSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
           PhoneNumberTypes.All.diff(phoneNumberTypes).foreach { phoneNumberType =>
             s"unexpected $phoneNumberType phone number type passed for $region region" in {
               intercept[IllegalArgumentException] {
-                Generators.validPhoneNumberGen(regionMetadata.region, phoneNumberType)
+                E164Generators.phoneNumberGen(regionMetadata.region, phoneNumberType)
               }
             }
           }
