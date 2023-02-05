@@ -1,8 +1,24 @@
 package io.github.mr_tolmach.metadata.model
 
+/** An enumeration representing the set of supported regions as represented by CLDR two-letter region codes, with the
+  * exception of the non-geographical region which is represented by the [[Regions.NonGeo]] value.
+  */
 object Regions extends Enumeration {
 
+  /** Type alias for values of the [[Regions]] enumeration. */
   type Region = Value
+
+  /** Value representing non-geographical features
+    *
+    * Non-geographical entities are phone number ranges that have a country calling code, but either do not belong to an
+    * actual country (some international services), or belong to a region which has a different country calling code
+    * from the country it is part of. Examples of such ranges are those starting with:
+    *
+    * <ul> <li>800 - country code assigned to the Universal International Freephone Service <li>808 - country code
+    * assigned to the International Shared Cost Service <li>870 - country code assigned to the Pitcairn Islands <li>...
+    * </ul>
+    */
+  val NonGeo = Value
 
   val AC = Value
   val AD = Value
@@ -249,10 +265,8 @@ object Regions extends Enumeration {
   val ZA = Value
   val ZM = Value
   val ZW = Value
-  val NonGeo = Value
 
+  /** Set of all values in the [[Regions]] enumeration. */
   val All: Set[Region] = values
 
 }
-
-
