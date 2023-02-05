@@ -1,3 +1,5 @@
-<img  align="center" src="other/assets/raf-logo.png">
+<p align="center">
+  <img src="other/assets/raf-logo.png">
+</p>
 
 # raf
