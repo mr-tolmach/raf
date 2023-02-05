@@ -1,3 +1,3 @@
-![raf](other/assets/raf-logo.png)
+<img  align="center" src="other/assets/raf-logo.png">
 
 # raf
