@@ -24,7 +24,7 @@ Then, add the following dependency:
 "io.github.mr-tolmach" %% "raf-generators" % rafVersion
 ```
 
-Finally, use it in you code:
+Finally, use it in your code:
 ```scala
 import io.github.mr_tolmach.generators.E164Generators
 import io.github.mr_tolmach.metadata.model.Regions
