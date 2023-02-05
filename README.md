@@ -9,7 +9,7 @@ Open-source library for generating valid phone numbers in the E.164 format. Base
 # Why not just use the libphonenumber?
 
 There are several reasons for this:
-* The regexs from libphonenumber cannot be used as is due to errors inside them. For example, [the problem with the phone number with premium rates in Belarus has not yet been fixed](https://issuetracker.google.com/issues/227765488).
+* The regexs from libphonenumber cannot be used as is due to errors inside them. For example, [the problem with the premium rate phone numbers in Belarus has not yet been fixed](https://issuetracker.google.com/issues/227765488).
 * The libphonenumber doesn't provide an API for generating valid phone numbers by default. Using [getExampleNumber](https://github.com/google/libphonenumber/blob/99a44a6ab50ccbd7654de6b6c803bd81977e9e99/java/libphonenumber/src/com/google/i18n/phonenumbers/PhoneNumberUtil.java#L2016), you can only get one example for each type of phone number in each region.
 
 # Ok, fine, how to use it?
