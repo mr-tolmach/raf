@@ -1,7 +1,9 @@
 package io.github.mr_tolmach.generators
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat
+import io.github.mr_tolmach.generators.PhoneNumberHelper.Util
 import io.github.mr_tolmach.metadata.RegionMetadataProvider
+import io.github.mr_tolmach.metadata.model.PhoneNumberTypes.PhoneNumberType
 import io.github.mr_tolmach.metadata.model.{PhoneNumberTypes, RegionMetadata, Regions}
 import org.scalacheck.ShrinkLowPriority
 import org.scalactic.anyvals.{PosInt, PosZDouble}
@@ -28,6 +30,13 @@ class E164GeneratorsSpec extends AnyWordSpec with Matchers with ScalaCheckProper
     checkNumberWithoutRegion(regionMetadata)(phoneNumber)
   }
 
+  private def checkPhoneNumber(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType)(
+      phoneNumber: String
+  ): Unit = {
+    checkNumberWithRegion(regionMetadata, phoneNumberType)(phoneNumber)
+    checkNumberWithoutRegion(regionMetadata, phoneNumberType)(phoneNumber)
+  }
+
   private def checkNumberWithRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, regionMetadata.region)
     regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
@@ -35,8 +44,28 @@ class E164GeneratorsSpec extends AnyWordSpec with Matchers with ScalaCheckProper
     actual shouldBe phoneNumber
   }
 
+  private def checkNumberWithRegion(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType)(
+      phoneNumber: String
+  ): Unit = {
+    val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, regionMetadata.region)
+    Util.getNumberType(parsed) shouldBe phoneNumberType
+    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
+    val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
+    actual shouldBe phoneNumber
+  }
+
   private def checkNumberWithoutRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
+    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
+    val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
+    actual shouldBe phoneNumber
+  }
+
+  private def checkNumberWithoutRegion(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType)(
+      phoneNumber: String
+  ): Unit = {
+    val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
+    Util.getNumberType(parsed) shouldBe phoneNumberType
     regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
     val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
     actual shouldBe phoneNumber
@@ -63,8 +92,8 @@ class E164GeneratorsSpec extends AnyWordSpec with Matchers with ScalaCheckProper
           val phoneNumberTypes = regionMetadata.countryCodeToTypePatterns.values.flatMap(_.keys).toSet
           phoneNumberTypes.foreach { phoneNumberType =>
             s"$region region and $phoneNumberType phone number type were passed" in {
-              val gen = E164Generators.phoneNumberGen(region)
-              val checker = checkPhoneNumber(regionMetadata)(_)
+              val gen = E164Generators.phoneNumberGen(region, phoneNumberType)
+              val checker = checkPhoneNumber(regionMetadata, phoneNumberType)(_)
               forAll(gen) { phoneNumber =>
                 checker(phoneNumber)
               }

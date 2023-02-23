@@ -72,7 +72,9 @@ object E164Generators {
 
   private def phoneNumberGen(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType): Gen[String] = {
     val countryCodeWithPattern = regionMetadata.countryCodeToTypePatterns.flatMap { case (countryCode, v) =>
-      v.get(phoneNumberType).map { pattern => countryCode -> pattern }
+      v.get(phoneNumberType).map { pattern =>
+        countryCode -> pattern
+      }
     }.toSeq
     if (countryCodeWithPattern.nonEmpty) {
       for {
