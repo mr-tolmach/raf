@@ -67,7 +67,9 @@ class E164GeneratorsSpec extends AnyWordSpec with Matchers with ScalaCheckProper
       phoneNumber: String
   ): Unit = {
     val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
-    Util.getNumberType(parsed) shouldBe phoneNumberType
+    val expectedNumberType = phoneNumberType.toString.toLowerCase
+    val actualNumberType = Util.getNumberType(parsed).toString.toLowerCase.filter(_.isLetter)
+    actualNumberType shouldBe expectedNumberType
     regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
     val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
     actual shouldBe phoneNumber
