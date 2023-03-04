@@ -2,7 +2,7 @@
   <img src="other/assets/raf-logo.png">
 </p>
 
-# What is it?
+# What's it?
 
 Open-source library for generating valid phone numbers in the E.164 format based on upgraded metadata from libphonenumber
 
