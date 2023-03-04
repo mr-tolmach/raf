@@ -1,9 +1,9 @@
 package io.github.mr_tolmach.generators
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat
-import io.github.mr_tolmach.generators.PhoneNumberHelper.Util
 import io.github.mr_tolmach.metadata.RegionMetadataProvider
 import io.github.mr_tolmach.metadata.model.PhoneNumberTypes.PhoneNumberType
+import io.github.mr_tolmach.metadata.model.Regions.{NonGeo, Region}
 import io.github.mr_tolmach.metadata.model.{PhoneNumberTypes, RegionMetadata, Regions}
 import org.scalacheck.ShrinkLowPriority
 import org.scalactic.anyvals.{PosInt, PosZDouble}
@@ -37,42 +37,68 @@ class E164GeneratorsSpec extends AnyWordSpec with Matchers with ScalaCheckProper
     checkNumberWithoutRegion(regionMetadata, phoneNumberType)(phoneNumber)
   }
 
+  private def checkPhoneNumber(
+      expectedRegion: Option[Region],
+      expectedPhoneNumberType: Option[PhoneNumberType],
+      possibleCountryCodes: Seq[Int]
+  )(phoneNumber: String): Unit = {
+    val parsed = expectedRegion match {
+      case Some(region) => PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, region)
+      case None         => PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
+    }
+    val parsedPhoneNumber = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
+    parsedPhoneNumber shouldBe phoneNumber
+    expectedRegion.foreach { expectedRegion =>
+      val actualRegion = PhoneNumberHelper.Util.getRegionCodeForNumber(parsed) match {
+        case "001" => NonGeo
+        case name  => Regions.withName(name)
+      }
+      actualRegion shouldBe expectedRegion
+    }
+    expectedPhoneNumberType.foreach { expectedPhoneNumberType =>
+      val normExpectedPhoneNumberType = expectedPhoneNumberType.toString.map(_.toLower)
+      val normActualPhoneNumberType =
+        PhoneNumberHelper.Util.getNumberType(parsed).toString.filter(_.isLetter).map(_.toLower)
+
+      normActualPhoneNumberType shouldBe normExpectedPhoneNumberType
+    }
+    possibleCountryCodes should contain(parsed.getCountryCode)
+  }
+
   private def checkNumberWithRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
-    val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, regionMetadata.region)
-    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
-    val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
-    actual shouldBe phoneNumber
+    checkPhoneNumber(
+      expectedRegion = Some(regionMetadata.region),
+      expectedPhoneNumberType = None,
+      possibleCountryCodes = regionMetadata.countryCodeToTypePatterns.keys.toSeq
+    )(phoneNumber)
   }
 
   private def checkNumberWithRegion(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType)(
       phoneNumber: String
   ): Unit = {
-    val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber, regionMetadata.region)
-    val expectedNumberType = phoneNumberType.toString.toLowerCase
-    val actualNumberType = Util.getNumberType(parsed).toString.toLowerCase.filter(_.isLetter)
-    actualNumberType shouldBe expectedNumberType
-    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
-    val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
-    actual shouldBe phoneNumber
+    checkPhoneNumber(
+      expectedRegion = Some(regionMetadata.region),
+      expectedPhoneNumberType = Some(phoneNumberType),
+      possibleCountryCodes = regionMetadata.countryCodeToTypePatterns.keys.toSeq
+    )(phoneNumber)
   }
 
   private def checkNumberWithoutRegion(regionMetadata: RegionMetadata)(phoneNumber: String): Unit = {
-    val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
-    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
-    val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
-    actual shouldBe phoneNumber
+    checkPhoneNumber(
+      expectedRegion = None,
+      expectedPhoneNumberType = None,
+      possibleCountryCodes = regionMetadata.countryCodeToTypePatterns.keys.toSeq
+    )(phoneNumber)
   }
 
   private def checkNumberWithoutRegion(regionMetadata: RegionMetadata, phoneNumberType: PhoneNumberType)(
       phoneNumber: String
   ): Unit = {
-    val parsed = PhoneNumberHelper.parseValidPhoneNumber(phoneNumber)
-    val expectedNumberType = phoneNumberType.toString.toLowerCase
-    val actualNumberType = Util.getNumberType(parsed).toString.toLowerCase.filter(_.isLetter)
-    actualNumberType shouldBe expectedNumberType
-    regionMetadata.countryCodeToTypePatterns.keys should contain(parsed.getCountryCode)
-    val actual = PhoneNumberHelper.Util.format(parsed, PhoneNumberFormat.E164)
-    actual shouldBe phoneNumber
+    checkPhoneNumber(
+      expectedRegion = None,
+      expectedPhoneNumberType = Some(phoneNumberType),
+      possibleCountryCodes = regionMetadata.countryCodeToTypePatterns.keys.toSeq
+    )(phoneNumber)
   }
 
   "E164Generators.PhoneNumberGen" should {
