@@ -29,6 +29,7 @@ Finally, use it in your code:
 ```scala
 import io.github.mr_tolmach.generators.E164Generators
 import io.github.mr_tolmach.metadata.model.Regions
+import io.github.mr_tolmach.metadata.model.PhoneNumberTypes
 
 // for scalatest + scalacheck property-based testing
 forAll(E164Generators.phoneNumberGen(Regions.AW))(check)
