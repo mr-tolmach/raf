@@ -1,6 +1,8 @@
 import scala.xml.{Node => XmlNode, NodeSeq => XmlNodeSeq, _}
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 
+val defaultScalaVersion = "2.13.10"
+
 inThisBuild(
   List(
     organization := "io.github.mr-tolmach",
@@ -17,8 +19,8 @@ inThisBuild(
         url("https://github.com/mr-tolmach")
       )
     ),
-    scalaVersion := Versions.defaultScalaVersion,
-    crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
+    scalaVersion := defaultScalaVersion,
+    crossScalaVersions := Seq("2.12.17", defaultScalaVersion, "3.2.2"),
     Test / logBuffered := false,
     // skip dependency elements with a test scope
     pomPostProcess := { (node: XmlNode) =>
