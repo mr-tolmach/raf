@@ -4,7 +4,7 @@
 
 # What's it?
 
-Open-source library for generating valid phone numbers in the E.164 format based on upgraded metadata from libphonenumber
+Open-source library for generating valid phone numbers in the E.164 format based on upgraded metadata from [libphonenumber](https://github.com/google/libphonenumber)
 
 # Why not just use the libphonenumber?
 
