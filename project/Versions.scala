@@ -1,5 +1,5 @@
 object Versions {
 
-  val defaultScalaVersion = "2.13.10"
+  val defaultScalaVersion = "3.3.0"
 
 }

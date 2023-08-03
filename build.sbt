@@ -18,7 +18,7 @@ inThisBuild(
       )
     ),
     scalaVersion := Versions.defaultScalaVersion,
-    crossScalaVersions := Seq("2.12.17", Versions.defaultScalaVersion),
+    crossScalaVersions := Seq("2.12.17", "2.13.10", Versions.defaultScalaVersion),
     Test / logBuffered := false,
     // skip dependency elements with a test scope
     pomPostProcess := { (node: XmlNode) =>
